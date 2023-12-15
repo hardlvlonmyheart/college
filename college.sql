@@ -1,56 +1,42 @@
-CREATE TABLE post(
-    id INTEGER NOT NULL PRIMARY KEY,
-    name_post VARCHAR(100)  NOT NULL
+CREATE TABLE college(
+id INTEGER NOT NULL PRIMARY KEY,
+name_college VARCHAR(100)  NOT NULL
 );
 
-CREATE TABLE users(
-    id INTEGER NOT NULL PRIMARY KEY,
-    login VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
+CREATE TABLE students(
+id INTEGER NOT NULL PRIMARY KEY,
+name_student VARCHAR(100) NOT NULL,
+year_of_birth VARCHAR(100) NOT NULL,
+college_id INTEGER,
+FOREIGN KEY(college_id) REFERENCES college(id)
 );
 
-CREATE TABLE personnel(
-    id INTEGER NOT NULL PRIMARY KEY,
-    surname VARCHAR(100) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    patronymic VARCHAR(100) NOT NULL UNIQUE,
-    date_of_birth VARCHAR(100) NOT NULL,
-    post_id INTEGER,
-    FOREIGN KEY(post_id) REFERENCES post(id)
+CREATE TABLE courses(
+id INTEGER NOT NULL PRIMARY KEY,
+name_course VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE zoo(
-    id INTEGER NOT NULL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    phone VARCHAR(100) NOT NULL,
-    city VARCHAR(100) NOT NULL
+CREATE TABLE professors(
+id INTEGER NOT NULL PRIMARY KEY,
+name_professor VARCHAR(100) NOT NULL,
+course_id INTEGER,
+FOREIGN KEY(course_id) REFERENCES courses(id)
 );
 
-CREATE TABLE animals(
-    id INTEGER NOT NULL PRIMARY KEY,
-    nickname VARCHAR(100) NOT NULL,
-    average_life_expectancy VARCHAR(100) NOT NULL,
-    homeland_id INTEGER,
-    class_id INTEGER,
-    zoo_id INTEGER,
-    tickets_id INTEGER,
-    FOREIGN KEY(homeland_id) REFERENCES homeland(id),
-    FOREIGN KEY(class_id) REFERENCES class(id),
-    FOREIGN KEY(zoo_id) REFERENCES zoo(id),
-    FOREIGN KEY(tickets_id) REFERENCES tickets(id)
+CREATE TABLE classes(
+id INTEGER NOT NULL PRIMARY KEY,
+name_class VARCHAR(100) NOT NULL,
+college_id INTEGER,
+professor_id INTEGER,
+FOREIGN KEY(college_id) REFERENCES college(id),
+FOREIGN KEY(professor_id) REFERENCES professors(id)
 );
 
-CREATE TABLE class(
-    id INTEGER NOT NULL PRIMARY KEY,
-    name_class VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE homeland(
-    id INTEGER NOT NULL PRIMARY KEY,
-    name_homeland VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE tickets(
-    id INTEGER NOT NULL PRIMARY KEY,
-    name_tickets VARCHAR(100) NOT NULL
+CREATE TABLE grades(
+id INTEGER NOT NULL PRIMARY KEY,
+student_id INTEGER,
+class_id INTEGER,
+grade VARCHAR(100),
+FOREIGN KEY(student_id) REFERENCES students(id),
+FOREIGN KEY(class_id) REFERENCES classes(id)
 );
